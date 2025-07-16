@@ -19,34 +19,53 @@ func escapeForSVG(text string) string {
 
 func renderQuoteSVG(author, quote string) string {
 	return fmt.Sprintf(`
-<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
-  <!-- Background -->
-  <rect width="600" height="400" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2" rx="12"/>
-  
-  <!-- Decorative elements -->
-  <circle cx="50" cy="50" r="3" fill="#6c757d" opacity="0.3"/>
-  <circle cx="550" cy="350" r="3" fill="#6c757d" opacity="0.3"/>
-  <circle cx="550" cy="50" r="2" fill="#6c757d" opacity="0.2"/>
-  <circle cx="50" cy="350" r="2" fill="#6c757d" opacity="0.2"/>
-  
-  <!-- Quote marks -->
-  <text x="80" y="120" font-family="Georgia, serif" font-size="60" fill="#dee2e6" font-weight="bold">"</text>
-  <text x="480" y="280" font-family="Georgia, serif" font-size="60" fill="#dee2e6" font-weight="bold">"</text>
-  
-  <!-- Quote text -->
-  <text x="300" y="160" font-family="Georgia, serif" font-size="24" fill="#212529" text-anchor="middle" font-style="italic">
-    <tspan x="300" dy="0">%s</tspan>
-  </text>
-  
-  <!-- Divider line -->
-  <line x1="200" y1="240" x2="400" y2="240" stroke="#6c757d" stroke-width="1" opacity="0.4"/>
-  
-  <!-- Author -->
-  <text x="300" y="280" font-family="Arial, sans-serif" font-size="18" fill="#6c757d" text-anchor="middle" font-weight="500">
-    — %s
-  </text>
-  
-  <!-- Subtle border accent -->
-  <rect x="8" y="8" width="584" height="384" fill="none" stroke="#dee2e6" stroke-width="1" rx="8" opacity="0.5"/>
-</svg>`, escapeForSVG(quote), escapeForSVG(author))
+  <svg width="300" height="300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <foreignObject width="100vw" height="100vh">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <style>
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          .container {
+            width: 300px;
+            height: 300px;
+            font-family: Poppins, Arial, Helvetica, sans-serif;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 10px;
+          }
+          .container h3::before {
+            content: open-quote;
+            font-size: 50px;
+            display: block;
+            margin-bottom: -20px;
+          }
+          .container h3::after {
+            content: close-quote;
+            font-size: 50px;
+            display: block;
+            margin-bottom: -20px;
+          }
+          .container h3 {
+            margin-bottom: 15px;
+          }
+          .container p {
+            font-style: italic;
+          }
+          ${themeStyles}
+        </style>
+        <div class="container">
+          <h3>%s</h3>
+          <p>- %s</p>
+        </div>
+      </div>
+    </foreignObject>
+  </svg>
+  `, escapeForSVG(quote), escapeForSVG(author))
 }
