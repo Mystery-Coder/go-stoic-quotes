@@ -10,7 +10,8 @@ import (
 
 	"github.com/gin-gonic/gin"
 )
-const QuotesURL = "https://stoic.tekloon.net/stoic-quote";
+
+const QuotesURL = "https://stoic.tekloon.net/stoic-quote"
 const JSONFileName = "quoteOfTheDay.json"
 
 // Match the API response shape: { "data": { "author": "...", "quote": "..." } }
@@ -25,15 +26,14 @@ type QuoteResponse struct {
 
 type QuoteDataFile struct {
 	Data QuoteData `json:"data"`
-	Date string `json:"date"`
+	Date string    `json:"date"`
 }
-
 
 func main() {
 
-    r := gin.Default()
+	r := gin.Default()
 
-    r.GET("/stoic-quote-svg", func(c *gin.Context) {
+	r.GET("/stoic-quote-svg", func(c *gin.Context) {
 
 		jsonFile, err := os.Open(JSONFileName)
 
@@ -46,14 +46,14 @@ func main() {
 		if err != nil {
 			fmt.Print("Could not read file", err)
 		}
-		
+
 		var quoteFile QuoteDataFile
 		if err := json.Unmarshal(bytes, &quoteFile); err != nil {
 			fmt.Print("Could not unmarshal", err)
 		}
-		
+
 		date_today := time.Now().Format("2006-01-02")
-		
+
 		if date_today != quoteFile.Date { //If quote is not today's, Get a new one and write to file
 			res, err := http.Get(QuotesURL)
 
@@ -74,12 +74,12 @@ func main() {
 				Date: date_today,
 			}
 
-			file, err := os.Create(JSONFileName)//Overwrites the file
+			file, err := os.Create(JSONFileName) //Overwrites the file
 			if err != nil {
 				fmt.Print("Could not create file", err)
 			}
 			defer file.Close()
-			
+
 			encoder := json.NewEncoder(file)
 			encoder.SetIndent("", "  ")
 			if err := encoder.Encode(jsonFileData); err != nil {
@@ -95,7 +95,11 @@ func main() {
 			c.Data(200, "image/svg+xml", []byte(svg))
 		}
 
-    })
+	})
 
-    r.Run(":8080")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" // fallback for local dev
+	}
+	r.Run(":" + port)
 }
