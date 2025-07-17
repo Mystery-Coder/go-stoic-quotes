@@ -33,7 +33,7 @@ func main() {
 
 	r := gin.Default()
 
-	r.GET("/stoic-quote-svg", func(c *gin.Context) {
+	r.GET("/stoic-quote-svg", func(c *gin.Context) { // Takes a Query Parameter of theme, light by default
 
 		jsonFile, err := os.Open(JSONFileName)
 
@@ -54,6 +54,8 @@ func main() {
 
 		date_today := time.Now().Format("2006-01-02")
 
+		themeName := c.DefaultQuery("theme", "default")
+
 		if date_today != quoteFile.Date { //If quote is not today's, Get a new one and write to file
 			res, err := http.Get(QuotesURL)
 
@@ -66,8 +68,6 @@ func main() {
 			if err := json.NewDecoder(res.Body).Decode(&quoteRes); err != nil {
 				fmt.Print("Decode failed", err)
 			}
-
-			// fmt.Print(quote.Data.Author, quote.Data.Quote)
 
 			jsonFileData := QuoteDataFile{
 				Data: quoteRes.Data,
@@ -86,11 +86,11 @@ func main() {
 				fmt.Print("Could not encode", err)
 			}
 
-			svg := renderQuoteSVG(quoteRes.Data.Author, quoteRes.Data.Quote)
+			svg := renderQuoteSVG(quoteRes.Data.Author, quoteRes.Data.Quote, themeName)
 
 			c.Data(200, "image/svg+xml", []byte(svg))
 		} else {
-			svg := renderQuoteSVG(quoteFile.Data.Author, quoteFile.Data.Quote)
+			svg := renderQuoteSVG(quoteFile.Data.Author, quoteFile.Data.Quote, themeName)
 
 			c.Data(200, "image/svg+xml", []byte(svg))
 		}
