@@ -19,14 +19,14 @@ from [Github Readme Quotes](https://github.com/PiyushSuthar/github-readme-quotes
 
 ```http
 
-GET go-stoic-quotes-production.up.railway.app/stoic-quote-svg
+GET https://go-stoic-quotes-production.up.railway.app/stoic-quote-svg
 ```
 
 with query parameter of theme,
 
 ```http
 
-GET go-stoic-quotes-production.up.railway.app/stoic-quote-svg?theme=random
+GET https://go-stoic-quotes-production.up.railway.app/stoic-quote-svg?theme=random
 ```
 
 Embed in MarkDown for README,

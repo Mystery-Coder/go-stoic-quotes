@@ -55,6 +55,7 @@ func main() {
 		date_today := time.Now().Format("2006-01-02")
 
 		themeName := c.DefaultQuery("theme", "default")
+		c.Header("Cache-Control", "public, max-age=86400")
 
 		if date_today != quoteFile.Date { //If quote is not today's, Get a new one and write to file
 			res, err := http.Get(QuotesURL)
