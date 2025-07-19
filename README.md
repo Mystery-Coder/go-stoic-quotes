@@ -38,5 +38,5 @@ Embed in MarkDown for README,
 ## Example
 
 <p align="center">
-    <img src="https://go-stoic-quotes-production.up.railway.app/stoic-quote-svg?theme=moonlight">
+    <img src="https://go-stoic-quotes-production.up.railway.app/stoic-quote-svg?theme=random">
 </p>
