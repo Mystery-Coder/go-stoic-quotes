@@ -33,6 +33,11 @@ func main() {
 
 	r := gin.Default()
 
+	r.GET("/", func(c *gin.Context) {
+		c.File("./demo/index.html")
+	})
+	r.Static("/static", "./demo")
+
 	r.GET("/stoic-quote-svg", func(c *gin.Context) { // Takes a Query Parameter of theme, light by default
 
 		jsonFile, err := os.Open(JSONFileName)

@@ -263,7 +263,7 @@ func renderQuoteSVG(author, quote, themeName string) string {
             margin-bottom: -20px;
           }
           .container h3 {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
           }
           .container p {
             font-style: italic;
