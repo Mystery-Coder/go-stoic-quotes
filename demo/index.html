@@ -3,10 +3,12 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Quote's Demo</title>
+		<title>Stoic Quotes Demo</title>
 
+		<!-- Tailwind CSS -->
 		<script src="https://cdn.tailwindcss.com"></script>
 
+		<!-- jQuery -->
 		<script
 			src="https://code.jquery.com/jquery-3.7.1.min.js"
 			integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
@@ -15,12 +17,64 @@
 
 		<script src="static/script.js" defer></script>
 	</head>
-	<body class="bg-gray-100 flex justify-center">
-		<button
-			id="btn"
-			class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+
+	<body
+		class="bg-gray-100 flex justify-center items-center min-h-screen px-4"
+	>
+		<div
+			class="bg-white p-8 rounded-lg shadow-lg w-full max-w-4xl text-center"
 		>
-			Show Quote
-		</button>
+			<h1 class="text-4xl font-semibold mb-6">Stoic Quotes Demo</h1>
+
+			<!-- Theme selector -->
+			<div class="mb-6">
+				<label for="theme" class="block mb-2 text-lg font-medium"
+					>Select Theme:</label
+				>
+				<select
+					id="theme"
+					class="border border-gray-300 rounded px-4 py-2 focus:outline-none"
+				>
+					<option value="default">default</option>
+					<option value="merko">merko</option>
+					<option value="radical">radical</option>
+					<option value="github">github</option>
+					<option value="catppuccin_macchiato">
+						catppuccin_macchiato
+					</option>
+					<option value="github_blue">github_blue</option>
+					<option value="dracula">dracula</option>
+					<option value="tokyonight">tokyonight</option>
+					<option value="shadow_red">shadow_red</option>
+					<option value="gruvbox">gruvbox</option>
+				</select>
+			</div>
+
+			<div
+				id="quote-svg"
+				class="flex justify-center items-center min-h-[300px] mb-6"
+			>
+				<p class="text-gray-500 italic">Loading quote...</p>
+			</div>
+
+			<div class="text-left space-y-4 text-sm font-mono">
+				<div>
+					<span class="font-semibold text-gray-700">URL:</span>
+					<pre
+						id="url"
+						class="bg-gray-100 p-3 rounded break-all"
+					></pre>
+				</div>
+				<div>
+					<span class="font-semibold text-gray-700"
+						>README Markdown:</span
+					>
+					<pre
+						id="readme"
+						class="bg-gray-100 p-3 rounded break-all"
+					></pre>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
