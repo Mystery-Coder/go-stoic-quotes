@@ -42,5 +42,5 @@ Visit <a href="https://go-stoic-quotes-production.up.railway.app/">Demo</a> to v
 ## Example
 
 <p align="center">
-    <img src="https://go-stoic-quotes-production.up.railway.app/stoic-quote-svg?theme=random&t=1221">
+    <img src="https://go-stoic-quotes-production.up.railway.app/stoic-quote-svg?theme=random">
 </p>
