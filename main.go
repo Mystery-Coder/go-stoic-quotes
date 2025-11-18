@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+
+	"math/rand/v2"
 	"net/http"
 	"os"
 	"time"
@@ -11,19 +13,41 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const QuotesURL = "https://stoic.tekloon.net/stoic-quote"
+const StoicQuotesURL = "https://stoic.tekloon.net/stoic-quote" //Stoic Quotes
+const DuneQuotesURL = "https://api.duniverse.space/v1/random"
 const JSONFileName = "quoteOfTheDay.json"
 
 // Match the API response shape: { "data": { "author": "...", "quote": "..." } }
-type QuoteData struct {
+type StoicQuoteData struct {
 	Author string `json:"author"`
 	Quote  string `json:"quote"`
 }
 
-type QuoteResponse struct {
-	Data QuoteData `json:"data"`
+type StoicQuoteResponse struct {
+	Data StoicQuoteData `json:"data"`
 }
 
+type DuneQuoteAuthor struct {
+	Name string `json:"name"`
+}
+
+type DuneQuoteData struct {
+	Title  string          `json:"title"`
+	Author DuneQuoteAuthor `json:"author"`
+}
+
+type DuneQuoteResponse struct {
+	Id   string `json:"id"`
+	Text string `json:"text"`
+	Book DuneQuoteData
+}
+
+type QuoteData struct {
+	Quote  string
+	Author string
+}
+
+// QuoteDataFile will be same regardless of stoic or dune
 type QuoteDataFile struct {
 	Data QuoteData `json:"data"`
 	Date string    `json:"date"`
@@ -63,21 +87,49 @@ func main() {
 		c.Header("Cache-Control", "public, max-age=86400")
 
 		if date_today != quoteFile.Date { //If quote is not today's, Get a new one and write to file
-			res, err := http.Get(QuotesURL)
+			fmt.Println("Herer")
+			toss := rand.IntN(2)
+			var res *http.Response
+			var err error
+			var qData QuoteData
+			var jsonFileData QuoteDataFile
 
-			if err != nil {
-				fmt.Print("Quote Fetch failed", err)
-			}
-			defer res.Body.Close()
+			if toss == 0 {
+				res, err = http.Get(StoicQuotesURL)
+				if err != nil {
+					fmt.Print("Quote Fetch failed", err)
+				}
+				defer res.Body.Close()
 
-			var quoteRes QuoteResponse
-			if err := json.NewDecoder(res.Body).Decode(&quoteRes); err != nil {
-				fmt.Print("Decode failed", err)
-			}
+				var stoicQuoteRes StoicQuoteResponse
+				if err := json.NewDecoder(res.Body).Decode(&stoicQuoteRes); err != nil {
+					fmt.Print("Decode failed", err)
+				}
 
-			jsonFileData := QuoteDataFile{
-				Data: quoteRes.Data,
-				Date: date_today,
+				qData.Author = stoicQuoteRes.Data.Author
+				qData.Quote = stoicQuoteRes.Data.Quote
+				jsonFileData = QuoteDataFile{
+					Data: qData,
+					Date: date_today,
+				}
+			} else {
+				res, err = http.Get(DuneQuotesURL)
+				if err != nil {
+					fmt.Print("Quote Fetch failed", err)
+				}
+				defer res.Body.Close()
+
+				var duneQuoteRes DuneQuoteResponse
+				if err := json.NewDecoder(res.Body).Decode(&duneQuoteRes); err != nil {
+					fmt.Print("Decode failed", err)
+				}
+
+				qData.Author = duneQuoteRes.Book.Author.Name + "(" + duneQuoteRes.Book.Title + ")"
+				qData.Quote = duneQuoteRes.Text
+				jsonFileData = QuoteDataFile{
+					Data: qData,
+					Date: date_today,
+				}
 			}
 
 			file, err := os.Create(JSONFileName) //Overwrites the file
@@ -92,7 +144,7 @@ func main() {
 				fmt.Print("Could not encode", err)
 			}
 
-			svg := renderQuoteSVG(quoteRes.Data.Author, quoteRes.Data.Quote, themeName)
+			svg := renderQuoteSVG(jsonFileData.Data.Author, jsonFileData.Data.Quote, themeName)
 
 			c.Data(200, "image/svg+xml", []byte(svg))
 		} else {

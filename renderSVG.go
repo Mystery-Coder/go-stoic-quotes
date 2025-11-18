@@ -252,13 +252,13 @@ func renderQuoteSVG(author, quote, themeName string) string {
           }
           .container h3::before {
             content: open-quote;
-            font-size: 50px;
+            font-size: 45px;
             display: block;
             margin-bottom: -20px;
           }
           .container h3::after {
             content: close-quote;
-            font-size: 45px;
+            font-size: 40px;
             display: block;
             margin-bottom: -20px;
           }
