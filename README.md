@@ -46,4 +46,3 @@ Visit <a href="https://go-stoic-quotes-production.up.railway.app/">Demo</a> to v
     <img src="https://go-stoic-quotes-production.up.railway.app/stoic-quote-svg?theme=random">
 </p>
 
----
