@@ -8,7 +8,7 @@ Added random Dune Quotes using quotes from [Dune Quotes API](https://duniverse.s
 
 ## Features
 
--   **Daily dose of Stoicism** – Get quotes from Marcus Aurelius, Seneca, Epictetus, and other Stoics.
+-   **Daily dose of Stoicism** – Get quotes from Marcus Aurelius, Seneca, Epictetus, and Frank Herbert's quotes from throughout the Dune saga.
 -   **SVG output** – Perfect for embedding in GitHub READMEs, personal dashboards, or blogs.
 -   **Customizable themes** – Choose from predefined color schemes.
 -   **Random theme support** – Use `theme=random` to get a different look each time.
